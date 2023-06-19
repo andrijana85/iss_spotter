@@ -9,4 +9,3 @@ fetchMyIP((error, ip) => {
 
   console.log('It worked! Returned IP:' , ip);
 });
-module.exports = { fetchMyIP };

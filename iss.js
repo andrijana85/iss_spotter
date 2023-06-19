@@ -1,23 +1,23 @@
 const request = require('request');
 
+// This is the URL of the JSON API endpoint from which we want to fetch the IP address8
 const url = 'https://api.ipify.org?format=json';
 
 const fetchMyIP = function(callback) {
-
+// use request to fetch IP address
   request(url,(error, response, body) => {
     if (error) {
-      return callback(error, null);
-      
-    }
-    if (response.statusCode !== 200) {
-      const message = `Status code ${response.statusCode} when fetching IP. Response ${body}`;
-      callback(Error(message), null);
+      callback(error, null);
       return;
     }
-    const ip = JSON.parse(body);
+    if (response.statusCode !== 200) {
+      const msg = `Status code ${response.statusCode} when fetching IP. Response ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+    const ip = JSON.parse(body).ip;
     callback(null, ip);
-    return;
   });
 };
-fetchMyIP();
+
 module.exports = { fetchMyIP };
