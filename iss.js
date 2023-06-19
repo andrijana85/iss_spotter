@@ -21,13 +21,25 @@ const fetchMyIP = function(callback) {
 };
 
 const fetchCoordsByIP = function(ip, callback) {
-  const location = 'http://ipwho.is/' + ip;
+  const location = `http://ipwho.is/${ip}`;
   request(location,(error, response, body) => {
     if (error) {
-      console.log('error');
       callback(error, null);
       return;
     }
+    const parsedBody = JSON.parse(body);
+    // check if "success" is true or not
+    if (!parsedBody.success) {
+      const message = `Success status was ${parsedBody.success}. Server message says: ${parsedBody.message} when fetching for IP ${parsedBody.ip}`;
+      callback(Error(message), null);
+      return;
+    }
+    // The resulting data sent back via the callback should be an object
+    const coordinates = {};
+    coordinates.latitude = parsedBody.latitude;
+    coordinates.longtude = parsedBody.longitude;
+
+    callback(null, coordinates);
   });
 };
 
