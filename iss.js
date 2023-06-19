@@ -20,4 +20,16 @@ const fetchMyIP = function(callback) {
   });
 };
 
+const fetchCoordsByIP = function(ip, callback) {
+  const location = 'http://ipwho.is/' + ip;
+  request(location,(error, response, body) => {
+    if (error) {
+      console.log('error');
+      callback(error, null);
+      return;
+    }
+  });
+};
+
 module.exports = { fetchMyIP };
+module.exports = {fetchCoordsByIP};
